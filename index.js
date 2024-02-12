@@ -34,7 +34,14 @@ io.on("connection", (socket) => {
 
       // oxirida unga taksi borayotganini bildiramiz va shu bilan birga unga haydovchi malumotlarini ham yuboramiz
       const pickedPrice = Math.floor(Math.random() * prices.length);
-      io.in(roomId).emit("driverIsGoing", { ...driver, price: pickedPrice });
+      
+      const pickedTimeout = Math.floor(
+        Math.random() * (10000 - 3000 + 1) + 3000
+      );
+
+      setTimeout(async () => {
+        io.in(roomId).emit("driverIsGoing", { ...driver, price: pickedPrice });
+      }, pickedTimeout);
     });
   });
 });
