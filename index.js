@@ -4,7 +4,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 require("./bot");
 
-process.setMaxListeners(0);
+process.setMaxListeners(Infinity);
 
 const app = express();
 const server = http.createServer(app);
