@@ -32,6 +32,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("clientRequesting", async (data) => {
+    const roomId = await data.roomId
     // ! database bilan bir nimalar bo'ldi...
 
     // oxirida unga taksi borayotganini bildiramiz va shu bilan birga unga haydovchi malumotlarini ham yuboramiz
