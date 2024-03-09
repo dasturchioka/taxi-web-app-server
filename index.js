@@ -2,10 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+require("./bot");
+
+process.setMaxListeners(0);
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, { cors: { origin: "*" } });
 
 const driver = {
   name: "Sardor Aminov",
@@ -21,7 +24,10 @@ const driver = {
 
 const prices = [5000, 6500, 4500, 10500, 13500, 4000, 6000, 14000, 12500];
 
+app.get("/", (req, res) => res.json({ msg: "Hello" }));
+
 io.on("connection", (socket) => {
+  console.log("connection");
   socket.on("clientJoined", async (data) => {
     const roomId = data.roomId;
     // har bir mijoz bilan individual shug'ullanish uchun socketda alohida `room` lar yaratiladi.
@@ -34,7 +40,7 @@ io.on("connection", (socket) => {
 
       // oxirida unga taksi borayotganini bildiramiz va shu bilan birga unga haydovchi malumotlarini ham yuboramiz
       const pickedPrice = Math.floor(Math.random() * prices.length);
-      
+
       const pickedTimeout = Math.floor(
         Math.random() * (10000 - 3000 + 1) + 3000
       );
@@ -43,6 +49,10 @@ io.on("connection", (socket) => {
         io.in(roomId).emit("driverIsGoing", { ...driver, price: pickedPrice });
       }, pickedTimeout);
     });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("disconnection");
   });
 });
 
