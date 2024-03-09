@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 require("./bot");
+process.setMaxListeners(Infinity)
 
 const app = express();
 const server = http.createServer(app);
@@ -32,7 +33,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("clientRequesting", async (data) => {
-    const roomId = await data.roomId
+    const roomId = await data.roomId;
     // ! database bilan bir nimalar bo'ldi...
 
     // oxirida unga taksi borayotganini bildiramiz va shu bilan birga unga haydovchi malumotlarini ham yuboramiz
@@ -43,30 +44,6 @@ io.on("connection", (socket) => {
     setTimeout(async () => {
       io.in(roomId).emit("driverIsGoing", { ...driver, price: pickedPrice });
     }, pickedTimeout);
-  });
-
-  socket.on("leave", async () => {
-    socket.off("clientJoined", async (data) => {
-      const roomId = data.roomId;
-      // har bir mijoz bilan individual shug'ullanish uchun socketda alohida `room` lar yaratiladi.
-      // roomId esa mijozning ilovasida ixtiyoriy raqamlar yoki harflar orqali generatsiya qilinadi.
-      socket.join(roomId);
-    });
-    socket.off("clientRequesting", async (data) => {
-      // ! database bilan bir nimalar bo'ldi...
-
-      // oxirida unga taksi borayotganini bildiramiz va shu bilan birga unga haydovchi malumotlarini ham yuboramiz
-      const pickedPrice = Math.floor(Math.random() * prices.length);
-
-      const pickedTimeout = Math.floor(
-        Math.random() * (10000 - 3000 + 1) + 3000
-      );
-
-      setTimeout(async () => {
-        io.in(roomId).emit("driverIsGoing", { ...driver, price: pickedPrice });
-      }, pickedTimeout);
-    });
-    console.log("User left!");
   });
 
   socket.on("disconnect", () => {
