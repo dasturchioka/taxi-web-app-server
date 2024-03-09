@@ -4,8 +4,6 @@ const http = require("http");
 const { Server } = require("socket.io");
 require("./bot");
 
-process.setMaxListeners(0);
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
