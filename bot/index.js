@@ -1,7 +1,12 @@
-require("dotenv").config()
+require("dotenv").config();
 const { Telegraf } = require("telegraf");
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new Telegraf(TOKEN);
+const Promise = require('bluebird');
+
+Promise.config({
+  cancellation: true,
+});
 
 const web_link = "https://taxi-web-app-client.vercel.app/select-taxi/";
 
