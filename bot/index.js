@@ -2,7 +2,7 @@ require("dotenv").config();
 const { Telegraf } = require("telegraf");
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new Telegraf(TOKEN);
-const Promise = require('bluebird');
+const Promise = require("bluebird");
 
 Promise.config({
   cancellation: true,
@@ -22,8 +22,16 @@ bot.start((ctx) =>
   )
 );
 
-bot.launch().then(() => {
-  console.log("Bot is launched!");
-});
+bot.launch(
+  {
+    webhook: {
+      domain: "https://taxi-web-app-server-novda.koyeb.app/",
+      port: Number(process.env.PORT),
+    },
+  },
+  () => {
+    console.log("Bot is launched!");
+  }
+);
 
 module.exports = bot;
