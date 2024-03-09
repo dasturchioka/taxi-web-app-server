@@ -8,7 +8,7 @@ Promise.config({
   cancellation: true,
 });
 
-const web_link = "https://taxi-web-app-client.vercel.app/select-taxi/";
+const web_link = "https://taxi-web-app-client.vercel.app/";
 
 bot.start((ctx) =>
   ctx.reply(
