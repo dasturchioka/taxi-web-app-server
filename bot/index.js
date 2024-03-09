@@ -3,7 +3,7 @@ const { Telegraf } = require("telegraf");
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new Telegraf(TOKEN);
 
-const web_link = "https://celebrated-torte-184681.netlify.app/";
+const web_link = "https://taxi-web-app-client.vercel.app/select-taxi/";
 
 bot.start((ctx) =>
   ctx.reply(
